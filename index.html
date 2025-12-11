@@ -423,6 +423,94 @@
         max-width: 500px;
       }
 
+      /* =======================================================
+         🎮 Página de Jogos (Grid)
+      ======================================================= */
+      .games-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+        width: 100%;
+        text-align: center;
+        animation: fadeIn 0.6s ease;
+      }
+      .games-page h2 {
+        font-size: clamp(28px, 4vw, 42px);
+        color: var(--primary);
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .games-page > p { /* Seletor para o parágrafo diretamente dentro de games-page */
+        font-size: 18px;
+        color: var(--text);
+        max-width: 600px;
+        margin-bottom: 40px;
+      }
+
+      .games-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 30px;
+        width: 100%;
+        max-width: 1200px;
+      }
+
+      .game-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      }
+      .game-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .game-icon {
+        font-size: 60px;
+        margin-bottom: 15px;
+      }
+
+      .game-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 10px;
+      }
+
+      .game-description {
+        font-size: 16px;
+        color: #64748b;
+        line-height: 1.5;
+        margin-bottom: 20px;
+        flex-grow: 1;
+      }
+
+      .play-button {
+        background: var(--secondary);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-family: "Fredoka", sans-serif;
+        font-size: 16px;
+      }
+      .play-button:hover:not(:disabled) {
+        background-color: #e66ab1;
+      }
+      .play-button:disabled {
+        background-color: #d1d5db;
+        cursor: not-allowed;
+      }
 
       /* =======================================================
          ⚙️ Configurações

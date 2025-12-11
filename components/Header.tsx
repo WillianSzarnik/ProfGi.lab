@@ -27,10 +27,10 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onSetti
           Início
         </button>
         <button
-          className={`tab-button ${activeTab === 'buscador' ? 'active' : ''}`}
-          onClick={() => setActiveTab('buscador')}
+          className={`tab-button ${activeTab === 'jogos' ? 'active' : ''}`}
+          onClick={() => setActiveTab('jogos')}
         >
-          Buscador
+          Jogos
         </button>
         <button
           className={`tab-button ${activeTab === 'imagens' ? 'active' : ''}`}
@@ -39,10 +39,10 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onSetti
           Imagens
         </button>
         <button
-          className={`tab-button ${activeTab === 'jogos' ? 'active' : ''}`}
-          onClick={() => setActiveTab('jogos')}
+          className={`tab-button ${activeTab === 'buscador' ? 'active' : ''}`}
+          onClick={() => setActiveTab('buscador')}
         >
-          Jogos
+          Buscador
         </button>
         <button className="settings-icon-btn" onClick={onSettingsClick} aria-label="Abrir configurações">
           <SettingsIcon />

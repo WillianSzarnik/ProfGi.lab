@@ -1,12 +1,16 @@
 import { GoogleGenAI } from "@google/genai";
 
-// A chave da API é configurada como uma variável de ambiente.
-const apiKey = process.env.API_KEY;
+// A chave da API é injetada pelo Vite via define
+declare const __API_KEY__: string;
+
+const apiKey = __API_KEY__;
 if (!apiKey) {
-  throw new Error("API_KEY environment variable not set.");
+  console.error("API_KEY environment variable not set. Please check your .env file.");
 }
 
-const ai = new GoogleGenAI({ apiKey });
+// Initialize with the key or an empty string to avoid immediate crash.
+// Calls will fail if the key is invalid, but the app will load.
+const ai = new GoogleGenAI({ apiKey: apiKey || "" });
 
 const systemInstruction = `
 Você é um assistente amigável e divertido chamado 'Detetive Sabe-Tudo'.
@@ -35,6 +39,10 @@ Coloque aqui a legenda curta e divertida para a imagem. Por exemplo: 'Santos Dum
 
 export async function fetchSafeSearchResult(query: string): Promise<{ content: string; imageUrl: string | null; imageCaption: string | null; }> {
   try {
+    if (!apiKey) {
+        throw new Error("API Key is missing. Cannot fetch results.");
+    }
+
     const textResponse = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: query,

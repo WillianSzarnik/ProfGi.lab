@@ -1,12 +1,12 @@
 import path from "path";
 import { defineConfig, loadEnv } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import { componentTagger } from "lovable-tagger";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, ".", "");
+  // Carrega variáveis de ambiente (GEMINI_API_KEY, API_KEY, etc.)
+  const env = loadEnv(mode, process.cwd(), "");
 
-  // Coolify define process.env.PORT — usa se existir, senão 3333
+  // Coolify normalmente injeta process.env.PORT
   const port = Number(process.env.PORT) || 3333;
 
   return {
@@ -18,13 +18,12 @@ export default defineConfig(({ mode }) => {
     preview: {
       host: true,
       port,
-      allowedHosts: ["profgi.com.br"], // ok no Coolify
+      allowedHosts: ["profgi.com.br"], // libera o domínio no preview
     },
 
     plugins: [
-      react(),                         // plugin SWC correto
-      mode === "development" && componentTagger(), // tagger só no dev
-    ].filter(Boolean),
+      react(), // plugin React oficial (sem SWC)
+    ],
 
     define: {
       __GEMINI_API_KEY__: JSON.stringify(env.GEMINI_API_KEY ?? ""),
@@ -33,7 +32,7 @@ export default defineConfig(({ mode }) => {
 
     resolve: {
       alias: {
-        "@": path.resolve(process.cwd(), "src"), // mais seguro que __dirname
+        "@": path.resolve(process.cwd(), "src"),
       },
     },
 

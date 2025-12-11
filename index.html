@@ -601,22 +601,113 @@
         }
       }
 
+      /* Mobile Optimizations */
       @media (max-width: 600px) {
-        .logo-container { flex-direction: column; }
-        .mascote { width: 80px; height: 80px; }
-        .search-bar { max-width: 95%; }
-        .result-card { padding: 20px; }
-        .logo { font-size: 42px; }
-        .tagline { font-size: 16px; }
-        .settings-panel {
-          width: calc(100% - 30px);
+        /* Header becomes just a top bar for the Title */
+        .app-header {
+            flex-direction: row;
+            justify-content: center;
+            height: 60px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
+        
         .header-title {
-            font-size: 24px;
+            font-size: 22px;
+            margin: 0;
         }
+
+        /* Navigation moves to bottom */
+        .tabs {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 8px 8px 20px 8px; /* Extra bottom padding for iOS Home indicator */
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* Tab buttons style for bottom bar */
         .tab-button {
+            font-size: 11px;
+            padding: 8px 4px;
+            flex: 1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Settings button specific */
+        .settings-icon-btn {
+            width: 40px;
+            height: 40px;
+            flex: 0 0 40px; /* Fixed width */
+            border-radius: 8px;
+        }
+
+        /* Content padding to clear bottom nav */
+        .app-content {
+            padding-bottom: 90px;
+        }
+
+        /* Center Settings Panel */
+        .settings-panel {
+            top: 50%;
+            left: 50%;
+            right: auto;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            max-width: 320px;
+            z-index: 2000;
+        }
+
+        /* Homepage specific */
+        .logo-container { flex-direction: column; gap: 5px; }
+        .mascote { width: 100px; height: 100px; }
+        .logo { font-size: 38px; margin-bottom: 5px; }
+        .tagline { font-size: 16px; padding: 0 10px; line-height: 1.4; }
+        
+        /* Search Bar */
+        .search-bar {
+            width: 100%;
+            margin-top: 20px;
+            padding: 5px 5px 5px 15px;
+        }
+        .search-bar input {
+            font-size: 16px; /* Avoid iOS zoom */
+        }
+        .search-bar button {
+            width: 42px;
+            height: 42px;
+        }
+        
+        /* Games Grid - Single Column */
+        .games-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        /* Result Card */
+        .result-card {
+            padding: 20px;
+            border-radius: 20px;
+        }
+        .result-image {
+            max-height: 250px;
+        }
+        .answer-content {
             font-size: 16px;
-            padding: 8px 16px;
         }
       }
 

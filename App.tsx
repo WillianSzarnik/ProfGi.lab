@@ -5,8 +5,9 @@ import { Buscador } from './components/Buscador';
 import { Imagens } from './components/Imagens';
 import { Jogos } from './components/Jogos';
 import { Inicio } from './components/Inicio';
+import { Professor } from './components/Professor';
 
-type Tab = 'inicio' | 'buscador' | 'imagens' | 'jogos';
+type Tab = 'inicio' | 'buscador' | 'imagens' | 'jogos' | 'professor';
 
 const DEFAULT_BUBBLE_SETTINGS: BubbleSettings = { duration: 15, size: 1.3 };
 
@@ -50,6 +51,8 @@ export default function App(): React.ReactElement {
         return <Imagens />;
       case 'jogos':
         return <Jogos />;
+      case 'professor':
+        return <Professor />;
       case 'inicio':
       default:
         return <Inicio setActiveTab={setActiveTab} />;
@@ -58,9 +61,9 @@ export default function App(): React.ReactElement {
   
   return (
     <>
-      <div aria-hidden="true" className="bubble b1"></div>
-      <div aria-hidden="true" className="bubble b2"></div>
-      <div aria-hidden="true" className="bubble b3"></div>
+      <div aria-hidden="true" className="bubble b1 no-print"></div>
+      <div aria-hidden="true" className="bubble b2 no-print"></div>
+      <div aria-hidden="true" className="bubble b3 no-print"></div>
       
       {isSettingsOpen && (
         <SettingsPanel 
@@ -70,17 +73,19 @@ export default function App(): React.ReactElement {
         />
       )}
 
-      <Header 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
-        onSettingsClick={() => setIsSettingsOpen(!isSettingsOpen)}
-      />
+      <div className="no-print">
+        <Header 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab} 
+          onSettingsClick={() => setIsSettingsOpen(!isSettingsOpen)}
+        />
+      </div>
       
       <main className="app-content">
         {renderContent()}
       </main>
 
-      <footer className="footer">
+      <footer className="footer no-print">
         © 2025 ProfGi.lab – Feito com amor e carinho para a aula da Prof Gi ❤️
       </footer>
     </>

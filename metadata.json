@@ -1,5 +1,8 @@
 {
   "name": "ProfGi.lab",
-  "description": "Um motor de busca seguro e divertido para crianças, onde as respostas são verificadas por uma IA para garantir que o conteúdo seja apropriado e educativo.",
-  "requestFramePermissions": []
+  "description": "Um motor de busca seguro e divertido para crianças, onde as respostas são verificadas por uma IA para garantir que o conteúdo seja apropriado e educativo, com ferramentas inteligentes dedicadas ao professor(a).",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

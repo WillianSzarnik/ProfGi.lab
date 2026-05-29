@@ -1,6 +1,6 @@
 import React from 'react';
 
-type Tab = 'inicio' | 'buscador' | 'imagens' | 'jogos';
+type Tab = 'inicio' | 'buscador' | 'imagens' | 'jogos' | 'professor';
 
 interface HeaderProps {
   activeTab: Tab;
@@ -43,6 +43,13 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onSetti
           onClick={() => setActiveTab('buscador')}
         >
           Buscador
+        </button>
+        <button
+          className={`tab-button ${activeTab === 'professor' ? 'active' : ''}`}
+          onClick={() => setActiveTab('professor')}
+          style={{ background: activeTab === 'professor' ? '#f43f5e' : 'transparent', color: activeTab === 'professor' ? 'white' : '#e11d48', border: '2px solid #fda4af', fontWeight: 600 }}
+        >
+          Prof(a) 🎓
         </button>
         <button className="settings-icon-btn" onClick={onSettingsClick} aria-label="Abrir configurações">
           <SettingsIcon />

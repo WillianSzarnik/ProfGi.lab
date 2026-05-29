@@ -19,9 +19,46 @@ export const Buscador: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [inputError, setInputError] = useState<string | null>(null);
 
+  const appendSearchLog = useCallback((term: string, status: 'approved' | 'blocked', reason?: string) => {
+    try {
+      const savedLogs = localStorage.getItem('searchLogs');
+      const logs = savedLogs ? JSON.parse(savedLogs) : [];
+      const newLog = {
+        id: Date.now().toString(),
+        timestamp: new Date().toLocaleString('pt-BR'),
+        term,
+        status,
+        reason: reason || ''
+      };
+      localStorage.setItem('searchLogs', JSON.stringify([newLog, ...logs].slice(0, 50)));
+    } catch (e) {
+      console.error("Failed to append search log", e);
+    }
+  }, []);
+
   const handleSearch = useCallback(async () => {
     if (!query.trim()) {
       setInputError('Por favor, digite algo para pesquisar!');
+      return;
+    }
+
+    // Check custom blocked terms (Teacher list)
+    let blockedList: string[] = ['violência', 'arma', 'morte', 'guerra', 'sangue', 'batalha', 'fogo'];
+    try {
+      const savedBlocked = localStorage.getItem('blockedTerms');
+      if (savedBlocked) {
+        blockedList = JSON.parse(savedBlocked);
+      }
+    } catch (e) {
+      console.error("Failed to load blocked terms from localStorage", e);
+    }
+
+    const lowercaseQuery = query.toLowerCase();
+    const matchedTerm = blockedList.find(term => lowercaseQuery.includes(term.toLowerCase()));
+
+    if (matchedTerm) {
+      appendSearchLog(query, 'blocked', matchedTerm);
+      setInputError(`Ops! Assuntos contendo "${matchedTerm}" são bloqueados pela Prof Gi para mantermos nosso ambiente divertido e amigável. Pesquise outros temas legais, como estrelas, plantas ou fósseis! 🌟`);
       return;
     }
 
@@ -37,6 +74,7 @@ export const Buscador: React.FC = () => {
       setResult({ content: aiResponse, query: query });
       setImageUrl(fetchedImageUrl);
       setImageCaption(fetchedImageCaption);
+      appendSearchLog(query, 'approved');
 
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Oops! Algo deu errado. Tente novamente!';
@@ -45,7 +83,7 @@ export const Buscador: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [query]);
+  }, [query, appendSearchLog]);
 
   const handleBack = () => {
     setResult(null);

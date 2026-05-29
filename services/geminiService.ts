@@ -1,12 +1,16 @@
 import { GoogleGenAI } from "@google/genai";
 
 // A chave da API é configurada como uma variável de ambiente.
-const apiKey = process.env.API_KEY;
-if (!apiKey) {
-  throw new Error("API_KEY environment variable not set.");
-}
+const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
 
-const ai = new GoogleGenAI({ apiKey });
+let ai: InstanceType<typeof GoogleGenAI> | null = null;
+
+function initializeAI() {
+  if (!ai && apiKey) {
+    ai = new GoogleGenAI({ apiKey });
+  }
+  return ai;
+}
 
 const systemInstruction = `
 Você é um assistente amigável e divertido chamado 'Detetive Sabe-Tudo'.
@@ -34,8 +38,14 @@ Coloque aqui a legenda curta e divertida para a imagem. Por exemplo: 'Santos Dum
 `;
 
 export async function fetchSafeSearchResult(query: string): Promise<{ content: string; imageUrl: string | null; imageCaption: string | null; }> {
+  const aiClient = initializeAI();
+  
+  if (!aiClient) {
+    throw new Error("API_KEY não foi configurada. Verifique a variável de ambiente GEMINI_API_KEY ou API_KEY.");
+  }
+
   try {
-    const textResponse = await ai.models.generateContent({
+    const textResponse = await aiClient.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: query,
       config: {
@@ -104,7 +114,12 @@ export async function generateLessonPlan(
   customText: string
 ): Promise<string> {
   try {
-    const aiClient = new GoogleGenAI({ apiKey: process.env.API_KEY || process.env.GEMINI_API_KEY });
+    const aiClient = initializeAI();
+    
+    if (!aiClient) {
+      throw new Error("API_KEY não foi configurada. Verifique a variável de ambiente GEMINI_API_KEY ou API_KEY.");
+    }
+
     const prompt = `Gere um Plano de Aula completo, criativo e motivador alinhado com a BNCC (Brasil):
 - Tema da Aula: ${topic}
 - Ano Escolar/Série: ${grade}
@@ -142,7 +157,12 @@ export async function generateActivityQuiz(
   grade: string
 ): Promise<string> {
   try {
-    const aiClient = new GoogleGenAI({ apiKey: process.env.API_KEY || process.env.GEMINI_API_KEY });
+    const aiClient = initializeAI();
+    
+    if (!aiClient) {
+      throw new Error("API_KEY não foi configurada. Verifique a variável de ambiente GEMINI_API_KEY ou API_KEY.");
+    }
+
     const prompt = `Gere uma atividade escolar divertida (quiz ou perguntas de fixação) sobre:
 - Tema da Atividade: ${topic}
 - Série recomendada: ${grade}
@@ -175,7 +195,12 @@ export async function generateKidsStory(
   moral: string
 ): Promise<string> {
   try {
-    const aiClient = new GoogleGenAI({ apiKey: process.env.API_KEY || process.env.GEMINI_API_KEY });
+    const aiClient = initializeAI();
+    
+    if (!aiClient) {
+      throw new Error("API_KEY não foi configurada. Verifique a variável de ambiente GEMINI_API_KEY ou API_KEY.");
+    }
+
     const prompt = `Crie uma história infantil lúdica e cativante para contar em sala de aula de Ensino Fundamental:
 - Nome/Tipo do Personagem Principal: ${character}
 - Tópico Educativo ou Científico: ${theme}
@@ -207,7 +232,12 @@ export async function generateMathEnigma(
   grade: string
 ): Promise<{ numero: string; p1: string; p2: string; p3: string; n1: string; n2: string; n3: string; n4: string }> {
   try {
-    const aiClient = new GoogleGenAI({ apiKey: process.env.API_KEY || process.env.GEMINI_API_KEY });
+    const aiClient = initializeAI();
+    
+    if (!aiClient) {
+      throw new Error("API_KEY não foi configurada. Verifique a variável de ambiente GEMINI_API_KEY ou API_KEY.");
+    }
+
     const prompt = `Gere um enigma matemático carismático para crianças de Ensino Fundamental:
 - Tema/Assunto matemático: ${topic || 'Qualquer desafio lúdico de números'}
 - Série recomendada: ${grade}

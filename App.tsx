@@ -15,6 +15,20 @@ export default function App(): React.ReactElement {
   const [activeTab, setActiveTab] = useState<Tab>('inicio');
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [bubbleSettings, setBubbleSettings] = useState<BubbleSettings>(DEFAULT_BUBBLE_SETTINGS);
+  const [hasError, setHasError] = useState<boolean>(false);
+
+  // Handle uncaught errors
+  useEffect(() => {
+    const handleError = () => {
+      setHasError(true);
+    };
+    window.addEventListener('error', handleError);
+    window.addEventListener('unhandledrejection', handleError);
+    return () => {
+      window.removeEventListener('error', handleError);
+      window.removeEventListener('unhandledrejection', handleError);
+    };
+  }, []);
 
   // Bubble settings effect
   useEffect(() => {
@@ -64,6 +78,47 @@ export default function App(): React.ReactElement {
       <div aria-hidden="true" className="bubble b1 no-print"></div>
       <div aria-hidden="true" className="bubble b2 no-print"></div>
       <div aria-hidden="true" className="bubble b3 no-print"></div>
+      
+      {hasError && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'white',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+          padding: '20px',
+          textAlign: 'center'
+        }}>
+          <h1 style={{ color: '#e53e3e', marginBottom: '20px' }}>Oops! Algo deu errado 😞</h1>
+          <p style={{ color: '#374151', marginBottom: '10px', fontSize: '16px' }}>
+            A aplicação encontrou um erro e não consegue inicializar.
+          </p>
+          <p style={{ color: '#64748b', marginBottom: '20px', fontSize: '14px' }}>
+            Possível causa: Variável de ambiente <strong>GEMINI_API_KEY</strong> não configurada.
+          </p>
+          <button 
+            onClick={() => window.location.reload()}
+            style={{
+              padding: '10px 20px',
+              background: '#00b4d8',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '16px',
+              fontWeight: '600'
+            }}
+          >
+            Recarregar Página
+          </button>
+        </div>
+      )}
       
       {isSettingsOpen && (
         <SettingsPanel 

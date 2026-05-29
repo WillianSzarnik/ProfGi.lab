@@ -209,15 +209,6 @@ export const Professor: React.FC = () => {
     }
   };
 
-  const handlePrint = () => {
-    try {
-      window.print();
-    } catch (e) {
-      console.error(e);
-      alert("Para imprimir seus materiais diretamente, abra o aplicativo em uma nova aba usando o botão no canto superior direito do painel de controle.");
-    }
-  };
-
   const handleDownloadCardPNG = async (id: string) => {
     const element = document.getElementById(`enigma-card-body-${id}`);
     if (!element) return;
@@ -346,6 +337,27 @@ export const Professor: React.FC = () => {
             border-radius: 12px !important;
             background: white !important;
             position: relative !important;
+          }
+          /* Preserve matrix grid lines for printing */
+          .enigma-card-print-target > div > div:last-child > div:last-child > div {
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            width: 100% !important;
+            height: 100% !important;
+            border: 3px solid #000000 !important;
+            background-color: #000000 !important;
+            gap: 2px !important;
+            box-sizing: border-box !important;
+          }
+          .enigma-card-print-target > div > div:last-child > div:last-child > div > div {
+            background-color: #ffffff !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-weight: 800 !important;
+            font-size: 16px !important;
+            color: #000000 !important;
+            page-break-inside: avoid !important;
           }
         }
       `}</style>
@@ -569,25 +581,6 @@ export const Professor: React.FC = () => {
                   }}
                 >
                   📄 Exportar PDF
-                </button>
-                <button
-                  onClick={handlePrint}
-                  style={{
-                    background: '#10b981',
-                    color: 'white',
-                    border: 'none',
-                    padding: '10px 16px',
-                    borderRadius: '12px',
-                    fontWeight: 600,
-                    fontSize: '14px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontFamily: 'inherit'
-                  }}
-                >
-                  🖨️ Imprimir Cards
                 </button>
               </div>
             </div>

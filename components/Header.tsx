@@ -49,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onSetti
           onClick={() => setActiveTab('professor')}
           style={{ background: activeTab === 'professor' ? '#f43f5e' : 'transparent', color: activeTab === 'professor' ? 'white' : '#e11d48', border: '2px solid #fda4af', fontWeight: 600 }}
         >
-          Prof(a) 🎓
+          Espaço do Prof(a) 🎓
         </button>
         <button className="settings-icon-btn" onClick={onSettingsClick} aria-label="Abrir configurações">
           <SettingsIcon />
